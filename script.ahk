@@ -1,3 +1,5 @@
+#SingleInstance
+
 !c:: ;if Alt+c (!=Alt) is pressed do...
 {
 	input := strLower(InputBox("", "Enter Command", "w100 h66").Value) ;read input
