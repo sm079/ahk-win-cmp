@@ -1,0 +1,5 @@
+# Personal configuration (paths, commands)
+user/
+
+# Local test output
+results.txt
