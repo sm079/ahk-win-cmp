@@ -24,7 +24,7 @@ engine\             generic code, no personal data
   Namer.ahk         folder names from free text (no model, see below)
   Explorer.ahk      folder shown by an Explorer window / the Desktop
   App.ahk           palette entry point, reload on save
-  Window.ahk        always-on-top, tooltips
+  Window.ahk        always-on-top, transparency, tooltips
   Text.ahk          quoting, URL encoding, file names
 user.example\       template for user\
   settings.ahk      shell options, your paths and programs

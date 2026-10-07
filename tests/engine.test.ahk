@@ -103,5 +103,11 @@ Aliases.Add("Dl", "C:\Data\Down loads")
 Check("alias case-insensitive", Aliases.Lookup("dL"), "C:\Data\Down loads")
 Check("alias missing", Aliases.Lookup("nope"), "")
 
+; ---- windows --------------------------------------------------------------
+Check("NextOpacity from opaque", NextOpacity("", -25), 230)
+Check("NextOpacity up", NextOpacity(100, 25), 125)
+Check("NextOpacity caps at opaque", NextOpacity(240, 25), 255)
+Check("NextOpacity floor", NextOpacity(40, -25), 30)
+
 FileAppend(failures " of " total " failed`n", "*")
 ExitApp(failures)
