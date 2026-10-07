@@ -21,7 +21,6 @@ engine\             generic code, no personal data
   Palette.ahk       the command input window
   Commands.ahk      command registry, command context, aliases
   Shell.ahk         terminals, PowerShell scripts, opening files
-  Namer.ahk         folder names from free text (no model, see below)
   Explorer.ahk      folder shown by an Explorer window / the Desktop
   App.ahk           palette entry point, reload on save
   Window.ahk        always-on-top, transparency, tooltips
@@ -87,36 +86,6 @@ version keeps working.
 Don't put API keys in these files. Store them as Windows user environment
 variables (`setx SOME_API_KEY "..."`); every program started from the
 palette inherits them. Restart the script after changing one.
-
-## Folder names from descriptions
-
-`Namer.Name(text)` turns a description into a short folder name such as
-`pytorch-cloud-gpu-server`. It is deterministic, needs no model or network,
-and handles a request pasted before or after thousands of lines of code in
-milliseconds:
-
-1. Only the prose is used. Fenced blocks, indented lines, code-like lines,
-   logs, stack traces and lead-ins ending in `:` are skipped. A `# Title`
-   on the first line counts, with a strong bonus.
-2. Links to GitHub, Hugging Face, npm or PyPI become the repo or package
-   name. Other URLs are dropped, and paths are cut to their last part.
-3. The prose is split into candidate phrases at stopwords and punctuation
-   (RAKE). Each word is scored by RAKE degree/frequency, boosted by how
-   often it occurs and weighted by:
-   - idf: how rare it is in your earlier descriptions;
-   - a penalty for generic words (`function`, `error`, `app`);
-   - a bonus for names (`PyTorch`, `GPU`) and words that are also code
-     identifiers;
-   - a bonus near the start or end of the prose, where the request usually is.
-4. The best phrases are joined in reading order. A linked repo or a
-   mixed-case name near the start or end is always kept.
-
-`Namer.UseCorpus(dir, "NOTES.md")` uses `dir\*\NOTES.md` as the idf corpus;
-it is read the first time a name is needed. The built-in word lists are
-standard English stopwords and generic programming words; add your own with
-`Namer.AddStopwords("...")` and `Namer.AddGeneric("...")` in
-`user\settings.ahk`. `UniqueDir(path)` adds `_01`,
-`_02`, ... when a folder of that name already exists.
 
 ## Tests
 

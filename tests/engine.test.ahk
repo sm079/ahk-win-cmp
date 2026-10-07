@@ -45,51 +45,6 @@ DirDelete(dir "_01")
 DirDelete(dir)
 Check("UniqueDir free", UniqueDir(dir), dir)
 
-; ---- names ----------------------------------------------------------------
-Check("Name plain", Namer.Name("Build me a Tiny todo-list app, please!"), "tiny-todo-list")
-Check("Name maxWords", Namer.Name("one two three four five six", 3), "four-five-six")
-Check("Name phrases", Namer.Name("I want a beginner friendly dashboard for PyTorch. Each run rents a "
-    . "temporary cloud GPU server and streams training metrics."), "pytorch-cloud-gpu-server")
-Check("Name local path", Namer.Name("have a look at D:\src\widget-kit project, refactor it"), "widget-kit")
-Check("Name quoted path", Namer.Name('fix "C:\Users\Someone\Start Menu\launcher.ahk" startup lag'), "launcher-startup-lag")
-Check("Name repo link", Namer.Name("make a web demo for https://github.com/someone/TinyParser/tree/v1.0.0"), "web-demo-tinyparser")
-Check("Name other URLs dropped", Namer.Name("summarize https://example.com/a/b?q=1 nicely"), "summarize-nicely")
-Check("Name markdown title", Namer.Name("# Inventory Tracker`n`n## Overview`n`nIt reads barcode scans and "
-    . "matches them against a catalog of products, then updates stock levels."), "inventory-tracker")
-Check("Name single word", Namer.Name("calculator"), "calculator")
-Check("Name all stopwords", SubStr(Namer.Name("make it so"), 1, 8), "project-")
-
-code := ""
-Loop 2000
-    code .= "    total += price[" A_Index "] * qty;`r`n"
-code := "function sum(price, qty) {`r`n" code "}`r`n"
-Check("Name code then request"
-    , Namer.Name(code "`r`nThis function overflows on big carts. Fix the overflow bug."), "overflows-big-carts")
-Check("Name request then fenced code"
-    , Namer.Name("Port this parser to Rust:`r`n``````py`r`ndef parse(s):`r`n    return s`r`n``````"), "port-parser-rust")
-Check("Name skips logs and lead-ins"
-    , Namer.Name("Here is the error:`r`nTraceback (most recent call last):`r`n"
-        . '  File "app.py", line 3, in <module>`r`nKeyError: `'id`'`r`n'
-        . "PS C:\src> python app.py`r`nwhy does the login crash"), "login-crash")
-Check("Name only code", SubStr(Namer.Name("x = 1;`r`ny = 2;"), 1, 8), "project-")
-
-; idf: a word in every earlier description stops being distinctive
-text := "dashboard showing weather maps"
-Check("Name without corpus", Namer.Name(text, 3), "showing-weather-maps")
-Loop 5
-    Namer.Learn("another weather project number " A_Index)
-Check("Name with corpus", Namer.Name(text, 3), "dashboard-showing-maps")
-Namer._docs := 0, Namer._df := Map()
-
-Namer.AddStopwords("Demo")
-Check("AddStopwords", Namer.Name("a quick demo of sorting"), "quick-sorting")
-
-Check("IsProse sentence", Namer.IsProse("Fix the overflow bug, please."), true)
-Check("IsProse assignment", Namer.IsProse("const total = 5"), false)
-Check("IsProse call", Namer.IsProse("print(x) and more words"), false)
-Check("IsProse indented", Namer.IsProse("    some indented words here"), false)
-Check("IsProse exception", Namer.IsProse("KeyError: 'id'"), false)
-
 ; ---- commands -------------------------------------------------------------
 global ran := []
 Commands.Add("^hello (?<who>\w+)$", (m, ctx) => ran.Push("hello " m["who"] " " ctx.input))

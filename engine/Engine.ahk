@@ -3,7 +3,6 @@
 ;  each other.
 ; ============================================================
 #Include %A_LineFile%\..\Text.ahk
-#Include %A_LineFile%\..\Namer.ahk
 #Include %A_LineFile%\..\Shell.ahk
 #Include %A_LineFile%\..\Explorer.ahk
 #Include %A_LineFile%\..\Window.ahk
